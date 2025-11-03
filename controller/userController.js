@@ -42,3 +42,19 @@ export const updateEmp = async(req , res)=>{
         return res.status(500).json({"error": "Internal server error"})
     }
 }
+
+export const deleteEmp = async(req , res)=>{
+    let empId = req.params.empId;
+    try{
+        const emp = await UserModel.findOne({where:{empId: empId}});
+        if(emp == null){
+            await UserModel.create(req.body);
+            return res.status(404).json({message:"emp not found"})
+        }
+        await emp.destroy();
+        return res.status(200).json({message:"deleted successfully"})
+    }catch(e){
+       console.log(error);
+       return res.status(500).json({"error": "Internal server error"}); 
+    }
+}
