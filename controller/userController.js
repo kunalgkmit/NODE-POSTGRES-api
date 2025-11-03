@@ -7,7 +7,7 @@ export const getAllEmp = async (req , res)=>{
             return res.status(200).json({"error": "users not found"})
         }
         return res.status(200).json(users)
-    }catch(error){
+    }catch(e){
         console.log(error);
         return res.status(500).json({"error": "Internal server error"})
     }
@@ -22,6 +22,21 @@ export const addEmp = async(req , res)=>{
             return res.status(201).json({message:"emp added successfully"})
         }
         return res.status(200).json({message:"already found"})
+    }catch(e){
+        console.log(error);
+        return res.status(500).json({"error": "Internal server error"})
+    }
+}
+
+export const updateEmp = async(req , res)=>{
+    let empId = req.params.empId;
+    try{
+        const emp = await UserModel.update(req.body , {where:{empId}});
+        if(emp[0] == 0){
+            return res.status(404).json({message: "not found"})
+        }
+        console.log(emp);
+        return res.status(200).json({message: "updated successfully"})
     }catch(e){
         console.log(error);
         return res.status(500).json({"error": "Internal server error"})
